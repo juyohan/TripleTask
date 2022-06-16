@@ -1,51 +1,31 @@
-CREATE TABLE `users`
+CREATE TABLE `review_events`
 (
-    `id`      bigint       NOT NULL AUTO_INCREMENT COMMENT '사용자 기본 키',
-    `user_id` varchar(128) NOT NULL COMMENT '사용자 id',
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARACTER
-      SET = utf8mb4
-    COMMENT
-        '사용자 정보';
-
-CREATE TABLE `reviews`
-(
-    `id`        bigint       NOT NULL AUTO_INCREMENT COMMENT '리뷰 기본 키',
-    `review_id` varchar(128) NOT NULL COMMENT '리뷰 id',
-    `user_id` varchar(128) NOT NULL COMMENT '연관관계 사용자 id',
+    `id`       bigint       NOT NULL AUTO_INCREMENT COMMENT '이벤트의 id',
+    `type`     varchar(128) NOT NULL COMMENT '이벤트의 타입',
+    `points`   bigint       NOT NULL COMMENT '이벤트 점수',
+    `user_id`  varchar(256) NOT NULL COMMENT '사용자 id',
+    `place_id` varchar(256) NOT NULL COMMENT '장소 id',
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES users(`user_id`)
+    INDEX `idx_events_user_id` (`user_id`),
+    INDEX `idx_events_place_id` (`place_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER
       SET = utf8mb4
     COMMENT
-        '리뷰 정보';
+        '이벤트 정보';
 
-CREATE TABLE `places`
+CREATE TABLE `review_event_logs`
 (
-    `id`       bigint       NOT NULL AUTO_INCREMENT COMMENT '장소 기본 키',
-    `place_id` varchar(128) NOT NULL COMMENT '장소 id',
-    `user_id` varchar(128) NOT NULL COMMENT '연관관계 사용자 id',
-    `review_id` varchar(128) NOT NULL COMMENT '연관관계 리뷰 id',
+    `id`              bigint       NOT NULL AUTO_INCREMENT COMMENT '로그 id',
+    `action_type`     varchar(128) NOT NULL COMMENT '실행된 행동',
+    `create_at`       datetime     NOT NULL COMMENT '저장된 시간',
+    `review_event_id` bigint       NOT NULL COMMENT '이벤트 id',
     PRIMARY KEY (`id`),
-    FOREIGN KEY (`user_id`) REFERENCES users(user_id),
-    FOREIGN KEY (`review_id`) REFERENCES reviews(review_id)
+    FOREIGN KEY (`review_event_id`) REFERENCES review_events (`id`),
+    INDEX `idx_review_event_logs_action_type` (`action_type`),
+    INDEX `idx_review_event_logs_event_id` (`review_event_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARACTER
       SET = utf8mb4
     COMMENT
-        '장소 정보';
-
-CREATE TABLE `photos`
-(
-    `id`       bigint       NOT NULL AUTO_INCREMENT COMMENT '사진 기본 키',
-    `photo_id` varchar(128) NOT NULL COMMENT '사진 id',
-    `review_id` varchar(128) NOT NULL COMMENT '연관관계 리뷰 id',
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`review_id`) REFERENCES reviews(review_id)
-) ENGINE = InnoDB
-  DEFAULT CHARACTER
-      SET = utf8mb4
-    COMMENT
-        '사진 정보';
+        '이벤트 정보 로그';

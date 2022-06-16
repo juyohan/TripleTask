@@ -5,15 +5,16 @@ import javax.persistence.*
 
 @Entity
 @Table(
-    name = "events",
+    name = "review_events",
     indexes = [
-        Index(name = "unique_idx_events_user_id", columnList = "user_id", unique = true),
-        Index(name = "unique_idx_events_place_id", columnList = "place_id", unique = true),
+        Index(name = "idx_review_events_user_id", columnList = "user_id", unique = false),
+        Index(name = "idx_review_events_place_id", columnList = "place_id", unique = false),
     ]
 )
 data class ReviewEvent(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
+    @Enumerated(EnumType.STRING)
     val type: EventType = EventType.REVIEW,
     val points: Int = 0,
     @Column(name = "user_id")
