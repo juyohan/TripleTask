@@ -1,6 +1,10 @@
 package com.example.triple.service
 
 import com.example.triple.dto.EventDto
+import com.example.triple.model.ReviewEvent
+import com.example.triple.model.ReviewEventLog
+import com.example.triple.model.enumeration.EventType
+import com.example.triple.repository.ReviewEventLogRepository
 import com.example.triple.repository.ReviewEventRepository
 import org.springframework.stereotype.Service
 
@@ -8,18 +12,30 @@ import org.springframework.stereotype.Service
 @Service
 class ReviewEventRegisterService(
     val reviewEventRepository: ReviewEventRepository,
+    val reviewEventLogRepository: ReviewEventLogRepository,
 ) {
 
     /**
-     * 이벤트 리뷰 DB에 저장
+     * 이벤트 리뷰와 그에 따른 로그 DB에 저장
      * @param eventDto 외부에서 넘어온 데이터
-     *
      */
     fun addReviewEvent(eventDto: EventDto.Request.EventDetails) {
-        var points: Int = 0
-        val contents = isEmptyContents(eventDto.content)
-        val photos = isEmptyPhotos(eventDto.attachedPhotoIds)
-        val review = checkFirstReview(eventDto.placeId)
+        var points: Int =
+            isEmptyContents(eventDto.content) + isEmptyPhotos(eventDto.attachedPhotoIds) + checkFirstReview(eventDto.placeId)
+
+        reviewEventLogRepository.save(
+            ReviewEventLog(
+                actionType = eventDto.action,
+                reviewEvent = reviewEventRepository.save(
+                    ReviewEvent(
+                        type = EventType.REVIEW,
+                        userId = eventDto.userId,
+                        placeId = eventDto.placeId,
+                        points = points,
+                    )
+                )
+            )
+        )
     }
 
     /**

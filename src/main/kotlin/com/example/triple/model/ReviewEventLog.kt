@@ -19,7 +19,7 @@ data class ReviewEventLog(
     @Enumerated(EnumType.STRING)
     val actionType: ReviewActionType = ReviewActionType.ADD,
     @Column(name = "created_at")
-    var createdAt: ZonedDateTime,
+    var createdAt: ZonedDateTime? = null,
 
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "id")
     @Column(name = "review_event_id")
