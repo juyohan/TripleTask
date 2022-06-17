@@ -19,6 +19,7 @@ class ReviewEventController(
     val reviewEventDeleteService: ReviewEventDeleteService,
     val reviewEventModifyService: ReviewEventModifyService,
 ) {
+
     @PostMapping
     fun eventSave(
         eventDto: EventDto.Request.EventDetails

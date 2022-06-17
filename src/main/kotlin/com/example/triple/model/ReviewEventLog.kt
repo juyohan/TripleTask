@@ -1,32 +1,30 @@
 package com.example.triple.model
 
+import com.example.triple.model.abstraction.Time
+import com.example.triple.model.enumeration.PointType
 import com.example.triple.model.enumeration.ReviewActionType
-import java.time.ZonedDateTime
 import javax.persistence.*
 
+
+// 점수가 움직일 때마다 log에 담아서 저장
 @Entity
-@Table(
-    name = "review_event_logs",
-    indexes = [
-        Index(name = "idx_review_event_logs_action_type", columnList = "action_type", unique = false),
-        Index(name = "idx_review_event_logs_review_event", columnList = "review_event_id", unique = false)
-    ]
-)
-data class ReviewEventLog(
+@Table(name = "review_event_logs")
+data class ReviewEventLog (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     @Column(name = "action_type")
     @Enumerated(EnumType.STRING)
     val actionType: ReviewActionType = ReviewActionType.ADD,
-    @Column(name = "created_at")
-    var createdAt: ZonedDateTime? = null,
+    @Column(name = "point_type")
+    @Enumerated(EnumType.STRING)
+    val pointType: PointType = PointType.CONTENT,
 
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "id")
-    @Column(name = "review_event_id")
-    val reviewEvent: ReviewEvent,
-){
-    @PrePersist
-    fun prePersist() {
-        createdAt = ZonedDateTime.now()
-    }
+//    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "review_id")
+//    val review: Review,
+
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "reviewer_id")
+    val reviewer: Reviewer,
+
+) : Time(){
+
 }

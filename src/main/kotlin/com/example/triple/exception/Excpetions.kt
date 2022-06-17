@@ -11,5 +11,5 @@ enum class Exceptions(
 
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_ERROR_01", "없는 사용자입니다."),
 
-    REVIEW_EXIST(HttpStatus.CONFLICT, "REVIEW_ERROR_01", "이미 리뷰를 작성하셨습니다."),
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REVIEW_ERROR_01", "존재하지 않는 리뷰입니다."),
 }
