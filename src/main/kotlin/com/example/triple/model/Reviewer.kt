@@ -10,7 +10,7 @@ import javax.persistence.*
         Index(name = "idx_unique_reviewers_user_id", columnList = "user_id", unique = true),
     ]
 )
-data class Reviewer(
+class Reviewer(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,
     var points: Int = 0,
