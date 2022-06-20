@@ -14,9 +14,6 @@ spring:
     hibernate:
       ddl-auto: create-drop
 
-  flyway:
-    enabled: false
-
 logging:
   level:
     org:
