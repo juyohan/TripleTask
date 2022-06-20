@@ -21,8 +21,8 @@ class ReviewEventController(
 ) {
 
     @PostMapping
-    fun eventSave(
-        eventDto: EventDto.Request.EventDetails
+    fun saveEvent(
+        eventDto: EventDto
     ) {
         when(eventDto.action) {
             ReviewActionType.ADD -> reviewEventRegisterService.addReviewEvent(eventDto)
@@ -33,7 +33,7 @@ class ReviewEventController(
     }
 
     @GetMapping
-    fun eventList() {
+    fun getOneUserPoint() {
 
     }
 }

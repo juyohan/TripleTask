@@ -1,6 +1,6 @@
 package com.example.triple.model.enumeration
 
-import com.example.triple.model.Reviewer
+import com.example.triple.dto.ReviewerDto
 
 enum class OperatorType(
     var value: Int = 0
@@ -9,8 +9,8 @@ enum class OperatorType(
     MINUS(-1);
 
     companion object {
-        fun operator(reviewer: Reviewer, type: OperatorType): OperatorType {
-            reviewer.points += type.value
+        fun operator(reviewerDto: ReviewerDto, type: OperatorType): OperatorType {
+            reviewerDto.point += type.value
             return type
         }
     }
