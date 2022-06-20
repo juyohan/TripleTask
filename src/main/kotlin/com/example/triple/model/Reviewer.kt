@@ -1,6 +1,7 @@
 package com.example.triple.model
 
 import com.example.triple.dto.ReviewerDto
+import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Entity
 import javax.persistence.Table
 import javax.persistence.Index
@@ -21,6 +22,7 @@ import javax.persistence.UniqueConstraint
         UniqueConstraint(name = "uk_reviewer_user_id", columnNames = ["user_id"]),
     ]
 )
+@DynamicUpdate
 class Reviewer(
     @Id @GeneratedValue(strategy = IDENTITY)
     val id: Long = 0L,
