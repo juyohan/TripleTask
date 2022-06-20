@@ -43,9 +43,7 @@ class Review(
 
     @ManyToOne(fetch = LAZY) @JoinColumn(name = "reviewer_id")
     var reviewer: Reviewer = Reviewer(),
-
-    ) : Time() {
-
+) : Time() {
     fun toDto(): ReviewDto = ReviewDto(
         id = id,
         reviewId = reviewId,
@@ -54,5 +52,4 @@ class Review(
         contentLength = contentLength,
         isFirst = isFirst,
     )
-
 }

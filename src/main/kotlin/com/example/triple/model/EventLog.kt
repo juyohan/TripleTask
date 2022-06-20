@@ -1,21 +1,20 @@
 package com.example.triple.model
 
-import com.example.triple.model.abstraction.Time
 import com.example.triple.model.enumeration.OperatorType
 import com.example.triple.model.enumeration.PointType
 import com.example.triple.model.enumeration.ReviewActionType
-import javax.persistence.Entity
-import javax.persistence.Table
+import com.example.triple.model.abstraction.Time
 import javax.persistence.Column
+import javax.persistence.Entity
 import javax.persistence.Enumerated
-import javax.persistence.Id
-import javax.persistence.GeneratedValue
-import javax.persistence.ManyToOne
-import javax.persistence.JoinColumn
-
-import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.EnumType.STRING
 import javax.persistence.FetchType.LAZY
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType.IDENTITY
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "event_logs")
@@ -34,5 +33,4 @@ class EventLog(
 
     @ManyToOne(fetch = LAZY) @JoinColumn(name = "reviewer_id")
     var reviewer: Reviewer = Reviewer(),
-
-    ) : Time()
+) : Time()

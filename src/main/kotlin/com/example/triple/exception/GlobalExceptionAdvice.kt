@@ -22,6 +22,7 @@ class GlobalExceptionAdvice : ResponseEntityExceptionHandler() {
                     request = request,
                     exceptions = exceptions,
                 )
-            ), HttpStatus.OK
+            ),
+            HttpStatus.OK
         )
 }

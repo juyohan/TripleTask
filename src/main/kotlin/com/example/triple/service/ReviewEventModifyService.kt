@@ -124,7 +124,6 @@ class ReviewEventModifyService(
                 reviewEventLogDto = reviewEventLogDto,
                 operatorType = OperatorType.MINUS
             )
-
         }
     }
 }

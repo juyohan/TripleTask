@@ -13,13 +13,13 @@ data class ReviewEventLogDto(
     val reviewerId: Long = 0L,
 ) {
 
-        fun toEntity(pointType: PointType): EventLog =
-            EventLog(
-                id, actionType, pointType, operatorType
-            )
+    fun toEntity(pointType: PointType): EventLog =
+        EventLog(
+            id, actionType, pointType, operatorType
+        )
 
-        fun toEntity(operatorType: OperatorType): EventLog =
-            EventLog(
-                id, actionType, pointType, operatorType
-            )
+    fun toEntity(operatorType: OperatorType): EventLog =
+        EventLog(
+            id, actionType, pointType, operatorType
+        )
 }

@@ -46,5 +46,4 @@ class ReviewEventLogCommonService(
         eventLog.reviewer.point += operatorType.value
         reviewEventLogRepository.save(eventLog)
     }
-
 }

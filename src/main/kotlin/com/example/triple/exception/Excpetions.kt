@@ -1,3 +1,4 @@
+// ktlint-disable filename
 package com.example.triple.exception
 
 import org.springframework.http.HttpStatus

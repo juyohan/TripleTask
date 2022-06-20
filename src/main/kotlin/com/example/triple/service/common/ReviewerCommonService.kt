@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 @Service
 class ReviewerCommonService(
     val reviewerRepository: ReviewerRepository
-){
+) {
     // Reviewer 객체를 통해 DB에 저장
     fun addReviewer(reviewer: Reviewer) = reviewerRepository.save(reviewer)
 

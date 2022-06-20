@@ -39,7 +39,7 @@ class ReviewCommonService(
     fun findOneReview(reviewId: String): ReviewDto = reviewRepository.findByReviewId(reviewId)
         .orElseThrow { throw BusinessException(Exceptions.REVIEW_NOT_FOUND) }.toDto()
 
-    //review Entity 에 접근하여 데이터를 변경
+    // review Entity 에 접근하여 데이터를 변경
     fun updateOneReview(reviewDto: ReviewDto) {
         val review = reviewRepository.getReferenceById(reviewDto.id)
         review.photoCount = reviewDto.photoCount
