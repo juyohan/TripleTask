@@ -10,13 +10,14 @@ import com.example.triple.service.common.ReviewCommonService
 import com.example.triple.service.common.ReviewEventLogCommonService
 import com.example.triple.service.common.ReviewerCommonService
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
-// 리뷰 이벤트 삭제 서비스
 /**
  * 1. 리뷰를 삭제하면 삭제한 로그 저장
  * 2. 삭제하면, 점수 회수 (글만 있는지, 첫번째 글인지, 사진 있는지 확인)
- * 2-1. 1번째 리뷰일 때, Log 를 뒤져서 가져오는게 나은지, 아니면 Column 을 생성해서 찾는게 나은지.
- * 3. 삭제할 때, 작성이 되었다면, 추가 점수 없음. -> 카운트를 해줘서 갯수가 줄어들었는지, 안줄어들었는지 확인해서 판단
+ * 2-1. 리뷰 내용의 길이를 확인하여 점수를 받았다면, 회수
+ * 2-2. 사진을 추가함으로써 점수를 받았다면, 회수
+ * 2-3. 첫번째 리뷰로 보너스 점수를 받았다면, 회수
  */
 @Service
 class ReviewEventDeleteService(
@@ -24,7 +25,17 @@ class ReviewEventDeleteService(
     val reviewCommonService: ReviewCommonService,
     val reviewerCommonService: ReviewerCommonService,
 ) {
-    fun deleteEvent(eventDto: EventDto) {
+    /**
+     * 각 조건에 만족하면 점수를 회수하고 해당 리뷰를 삭제하는 메소드
+     *
+     * @param eventDto 삭제 요청의 데이터가 들은 DTO
+     *
+     * @return
+     * Reviewer Entity 가 update 쿼리를 한 뒤, 해당 데이터를 다시 접근해서 가져와야하기 때문에 1차 캐시에 존재하고 있는
+     * Entity 를 접근하기 위해 getReferenceReviewer() 을 통해 가져옴
+     */
+    @Transactional
+    fun deleteEvent(eventDto: EventDto): ReviewerDto {
         val reviewerDto: ReviewerDto = reviewerCommonService.findOneReviewer(eventDto.userId)
         val reviewDto: ReviewDto = reviewCommonService.findOneReview(eventDto.reviewId)
 
@@ -34,26 +45,27 @@ class ReviewEventDeleteService(
             reviewerId = reviewerDto.id
         )
 
+        // 2-1번
         if (reviewDto.contentLength > 0)
             reviewEventLogCommonService.addReviewEventLog(
                 reviewEventLogDto = reviewEventLogDto,
                 pointType = PointType.CONTENT,
             )
-
+        // 2-2번
         if (reviewDto.photoCount > 0)
             reviewEventLogCommonService.addReviewEventLog(
                 reviewEventLogDto = reviewEventLogDto,
                 pointType = PointType.PHOTO,
             )
-
+        // 2-3번
         if (reviewDto.isFirst)
             reviewEventLogCommonService.addReviewEventLog(
                 reviewEventLogDto = reviewEventLogDto,
                 pointType = PointType.FIRST_PLACE,
             )
 
-        reviewCommonService.deleteOneReview(reviewDto.reviewId)
+        reviewCommonService.deleteOneReview(reviewDto.id)
+
+        return reviewerCommonService.getReferenceReviewer(reviewerDto.id).toDto()
     }
-
-
 }

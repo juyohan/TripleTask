@@ -12,11 +12,11 @@ import com.example.triple.service.common.ReviewerCommonService
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
 
-// 리뷰 이벤트 수정 서비스
 /**
- * 1. 리뷰 내용이 0자로 바뀌었을 때,
- * 2. 리뷰의 사진 첨부가 1개 이상 -> 0개로 변경되었을 때,
- * 2-1. 리뷰의 사진 첨부가 0개 -> 1개 이상으로 변경되었을 때,
+ * 1. 리뷰 내용이 1자 이상 -> 0자일 때, 점수 회수
+ * 1-1 0자 -> 1자 이상일 때, 점수 추가
+ * 2. 리뷰의 사진 첨부가 1개 이상 -> 0개일 때, 점수 회수
+ * 2-1. 0개 -> 1개 이상일 때, 점수 추가
  */
 @Service
 class ReviewEventModifyService(
@@ -25,8 +25,17 @@ class ReviewEventModifyService(
     val reviewerCommonService: ReviewerCommonService,
 ) {
 
+    /**
+     * 수정 요청이 들어왔을 때, 수행하는 메소드
+     *
+     * @param eventDto 요청온 API 의 데이터
+     *
+     * @return
+     * Reviewer Entity 가 update 쿼리를 한 뒤, 해당 데이터를 다시 접근해서 가져와야하기 때문에 1차 캐시에 존재하고 있는
+     * Entity 를 접근하기 위해 getReferenceReviewer() 을 통해 가져옴
+     */
     @Transactional
-    fun modifyEvent(eventDto: EventDto) {
+    fun modifyEvent(eventDto: EventDto): ReviewerDto {
         val reviewerDto: ReviewerDto = reviewerCommonService.findOneReviewer(userId = eventDto.userId)
         val reviewDto: ReviewDto = reviewCommonService.findOneReview(reviewId = eventDto.reviewId)
         val reviewEventLogDto = ReviewEventLogDto(
@@ -34,6 +43,7 @@ class ReviewEventModifyService(
             reviewerId = reviewerDto.id,
         )
 
+        // 1번 조건
         if (reviewDto.contentLength != eventDto.content.length) {
             modifyReviewContent(
                 reviewEventLogDto = reviewEventLogDto,
@@ -43,6 +53,7 @@ class ReviewEventModifyService(
             reviewDto.contentLength = eventDto.content.length
         }
 
+        // 2번 조건
         if (reviewDto.photoCount != eventDto.attachedPhotoIds.size) {
             modifyReviewPhotoCount(
                 reviewEventLogDto = reviewEventLogDto,
@@ -52,9 +63,19 @@ class ReviewEventModifyService(
             reviewDto.photoCount = eventDto.attachedPhotoIds.size
         }
 
+        // 변경된 리뷰 업데이트
         reviewCommonService.updateOneReview(reviewDto)
+
+        return reviewerCommonService.getReferenceReviewer(reviewerDto.id).toDto()
     }
 
+    /**
+     * 사진의 개수가 변경되었을 때, 수행하는 메소드
+     *
+     * @param reviewEventLogDto 로그를 저장하기 위해 사용하는 DTO 객체
+     * @param photoCount 현재 리뷰가 가지고 있는 사진의 개수
+     * @param modifyPhotoCount 수정 요청이 들어온 API 데이터가 가지고 있는 사진의 개수
+     */
     fun modifyReviewPhotoCount(reviewEventLogDto: ReviewEventLogDto, photoCount: Int, modifyPhotoCount: Int) {
         reviewEventLogDto.pointType = PointType.PHOTO
 
@@ -75,6 +96,13 @@ class ReviewEventModifyService(
         }
     }
 
+    /**
+     * 리뷰 내용의 길이가 변경되었을 때, 수행하는 메소드
+     *
+     * @param reviewEventLogDto 로그를 저장하기 위해 사용하는 DTO 객체
+     * @param contentLength 현재 리뷰로 작성되어있는 내용의 길이
+     * @param modifyContentLength 수정 요청이 들어온 API 데이터가 가지고 있는 리뷰 내용의 길이
+     */
     fun modifyReviewContent(
         reviewEventLogDto: ReviewEventLogDto,
         contentLength: Int,

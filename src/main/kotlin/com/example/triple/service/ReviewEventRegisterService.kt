@@ -33,9 +33,13 @@ class ReviewEventRegisterService(
      * 각 조건을 만족했을 때, 1점씩 부여하여 마지막에 점수를 반영시킴
      *
      * @param eventDto 요청받은 정보의 Dto
+     *
+     * @return
+     * Reviewer Entity 가 update 쿼리를 한 뒤, 해당 데이터를 다시 접근해서 가져와야하기 때문에 1차 캐시에 존재하고 있는
+     * Entity 를 접근하기 위해 getReferenceReviewer() 을 통해 가져옴
      */
     @Transactional
-    fun addReviewEvent(eventDto: EventDto) {
+    fun addReviewEvent(eventDto: EventDto): ReviewerDto {
         val reviewerDto: ReviewerDto = reviewerCommonService.findOrCreateReviewer(eventDto.userId)
         val reviewDto: ReviewDto = ReviewDto().createDto(eventDto, reviewerDto.id)
         val reviewEventLogDto = ReviewEventLogDto(
@@ -69,5 +73,6 @@ class ReviewEventRegisterService(
 
         // 리뷰 저장
         reviewCommonService.addReviewDto(reviewDto)
+        return reviewerCommonService.getReferenceReviewer(reviewerDto.id).toDto()
     }
 }
