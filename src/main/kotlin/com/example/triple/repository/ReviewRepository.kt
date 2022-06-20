@@ -10,5 +10,4 @@ interface ReviewRepository: JpaRepository<Review, Long> {
     fun findByReviewId(reviewId: String): Optional<Review>
     fun countByPlaceId(placeId: String): Int
     fun deleteByReviewId(reviewId: String): Unit
-
 }

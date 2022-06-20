@@ -7,12 +7,10 @@ data class ReviewerDto(
     val userId: String = "",
     var point: Int = 0,
 ) {
-
     fun toEntity(): Reviewer =
         Reviewer(
             id = id,
             userId = userId,
             point = point,
         )
-
 }
