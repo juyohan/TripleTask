@@ -5,4 +5,12 @@
 - - -
 <img width="100%" alt="스크린샷 2022-06-20 18 44 16" src="https://user-images.githubusercontent.com/20573091/174574508-490088a0-4bd5-4fd4-9d37-4f9bc248f98e.png">
 
-### 
+### 🚃 Layer
+- - -
+- Controller Layer
+- Business Service Layer
+- Common Service Layer
+- Data Access Layer
+- RDBMS
+
+### 🚀 실행 방법
