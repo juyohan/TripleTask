@@ -3,7 +3,7 @@
 <br>
 ### 💾 DB Schema
 - - -
-<img width="100%" alt="스크린샷 2022-06-21 15 19 02" src="https://user-images.githubusercontent.com/20573091/174729777-af142bec-c12f-42a4-94d5-783ce18727c6.png">
+<img width="100%" alt="스크린샷 2022-06-21 15 20 18" src="https://user-images.githubusercontent.com/20573091/174729897-1ff4de16-fe4c-4ab3-9fe2-0542993560ff.png">
 
 ### 🚃 Layer
 - - -
@@ -16,6 +16,7 @@
 ### 🚀 실행 방법
 - - -
 ##### DB
+
 ``` mysql
 mysql -u root -p // mysql root 계정에 접속
 
