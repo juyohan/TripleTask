@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 
 @RestController
@@ -29,9 +30,8 @@ class ReviewEventController(
 
     @PostMapping
     fun saveEvent(
-        eventDto: EventDto
-    ): ResponseEntity<CommonApiResponse> =
-        ResponseEntity(
+        @RequestBody eventDto: EventDto
+    ): ResponseEntity<CommonApiResponse> = ResponseEntity(
             success(
                 when (eventDto.action) {
                     ReviewActionType.ADD -> reviewEventRegisterService.addReviewEvent(eventDto)
