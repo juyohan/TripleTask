@@ -3,7 +3,7 @@
 <br>
 ### 💾 DB Schema
 - - -
-<img width="100%" alt="스크린샷 2022-06-21 12 17 23" src="https://user-images.githubusercontent.com/20573091/174709051-ec56ffa0-217c-4bd5-87c4-336fb3af56d4.png">
+<img width="100%" alt="스크린샷 2022-06-21 15 19 02" src="https://user-images.githubusercontent.com/20573091/174729777-af142bec-c12f-42a4-94d5-783ce18727c6.png">
 
 ### 🚃 Layer
 - - -
