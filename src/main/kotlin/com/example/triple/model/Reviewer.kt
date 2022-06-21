@@ -15,9 +15,6 @@ import javax.persistence.UniqueConstraint
 @Entity
 @Table(
     name = "reviewers",
-    indexes = [
-        Index(name = "idx_reviewers_user_id", columnList = "user_id", unique = false),
-    ],
     uniqueConstraints = [
         UniqueConstraint(name = "uk_reviewer_user_id", columnNames = ["user_id"]),
     ]
