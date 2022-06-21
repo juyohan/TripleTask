@@ -3,7 +3,7 @@
 <br>
 ### 💾 DB Schema
 - - -
-<img width="100%" alt="스크린샷 2022-06-20 18 44 16" src="https://user-images.githubusercontent.com/20573091/174574508-490088a0-4bd5-4fd4-9d37-4f9bc248f98e.png">
+<img width="100%" alt="스크린샷 2022-06-21 12 17 23" src="https://user-images.githubusercontent.com/20573091/174709051-ec56ffa0-217c-4bd5-87c4-336fb3af56d4.png">
 
 ### 🚃 Layer
 - - -
@@ -14,3 +14,17 @@
 - RDBMS
 
 ### 🚀 실행 방법
+- - -
+##### DB
+``` mysql
+mysql -u root -p // mysql root 계정에 접속
+
+CREATE USER 'triple'@'localhost' identified by 'triple'; // 사용자 계정을 이름 : trple, 비밀번호 : triple 로 생성
+CREATE DATABASE triple; // triple 이름을 가진 데이터 베이스 생성
+GRANT ALL PRIVILEGES ON 'triple'.'*' to 'triple'@'localhost' // 지정 사용자에게 지정 데이터베이스의 권한을 부여
+```
+##### Build & 배포
+```
+./gradlew build -x test // 프로젝트를 build 하는데, test 는 제외하고 build
+java -jar build/libs/{jar 파일명} // 빌드한 프로젝트 실행 - 파일명 예) triple-0.0.1-SNAPSHOT.jar
+```
