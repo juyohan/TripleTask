@@ -31,7 +31,8 @@ class ReviewEventController(
     @PostMapping
     fun saveEvent(
         @RequestBody eventDto: EventDto
-    ): ResponseEntity<CommonApiResponse> = ResponseEntity(
+    ): ResponseEntity<CommonApiResponse> =
+        ResponseEntity(
             success(
                 when (eventDto.action) {
                     ReviewActionType.ADD -> reviewEventRegisterService.addReviewEvent(eventDto)

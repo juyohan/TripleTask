@@ -11,7 +11,6 @@ import javax.persistence.Id
 import javax.persistence.GeneratedValue
 import javax.persistence.ManyToOne
 import javax.persistence.JoinColumn
-
 import javax.persistence.FetchType.LAZY
 import javax.persistence.GenerationType.IDENTITY
 import javax.persistence.UniqueConstraint

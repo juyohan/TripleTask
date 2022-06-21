@@ -5,7 +5,6 @@ import com.example.triple.dto.ReviewerDto
 import org.hibernate.annotations.DynamicUpdate
 import javax.persistence.Entity
 import javax.persistence.Table
-import javax.persistence.Index
 import javax.persistence.Id
 import javax.persistence.GeneratedValue
 import javax.persistence.Column
